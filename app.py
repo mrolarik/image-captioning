@@ -23,7 +23,7 @@ sample_images = {
 
 selected_sample = None
 for label, url in sample_images.items():
-    st.sidebar.image(url, caption=label, use_column_width=True)
+    st.sidebar.image(url, caption=label, use_container_width=True)
     if st.sidebar.button(f"ใช้รูปภาพ: {label}"):
         selected_sample = url
         st.session_state['selected_sample_label'] = label
