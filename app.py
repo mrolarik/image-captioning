@@ -31,11 +31,11 @@ st.write("เลือกรูปจากตัวอย่างด้าน�
 if 'random_keys' not in st.session_state:
     st.session_state.random_keys = random.sample(list(sample_images.keys()), 2)
 
-if st.button("🔀 สุ่มรูปภาพตัวอย่างใหม่"):
+if st.button("🔀 คลิกเพื่อสุ่มรูปภาพตัวอย่างใหม่"):
     st.session_state.random_keys = random.sample(list(sample_images.keys()), 2)
 
 # ==== Display the 2 random images ====
-st.subheader("🖼️ ตัวอย่างรูปภาพ (สุ่ม 2 รูป)")
+st.write("🖼️ ตัวอย่างรูปภาพ")
 image = None
 selected_sample = None
 
