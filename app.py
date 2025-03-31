@@ -65,7 +65,7 @@ if uploaded_file:
 # ==== URL input ====
 image_url_input = st.text_input(
     "🔗 หรือป้อน URL ของรูปภาพ (ลงท้ายด้วย .jpg, .png, .jpeg)",
-    placeholder="ตัวอย่าง: https://images.unsplash.com/photo-1601758123927-196d5f5fb692"
+    placeholder="ตัวอย่าง: https://pettownsendvet.com/wp-content/uploads/2023/01/iStock-1052880600.jpg"
 )
 if image_url_input and not uploaded_file and 'selected_sample_url' not in st.session_state:
     try:
@@ -80,6 +80,7 @@ if image_url_input and not uploaded_file and 'selected_sample_url' not in st.ses
 
 # ==== Caption generation ====
 if image:
+    st.subheader("📸 ผลลัพธ์การทำ Image Captioning")
     st.image(image, caption="📸 รูปภาพที่เลือก", use_container_width=True)
 
     with st.spinner("🧠 กำลังอธิบายรูปภาพ..."):
