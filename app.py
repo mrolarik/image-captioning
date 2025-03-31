@@ -68,6 +68,7 @@ if image_url_input and not uploaded_file and not selected_sample:
 
 # ==== สร้างคำอธิบาย ====
 if image:
+    st.subheader("📸 ผลลัพธ์การทำ Image Captioning")
     st.image(image, caption="📸 รูปภาพที่เลือก", use_container_width=True)
 
     with st.spinner("🧠 กำลังวิเคราะห์และอธิบายรูปภาพ..."):
