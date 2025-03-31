@@ -14,28 +14,31 @@ def load_model():
 
 processor, model = load_model()
 
-# ==== Sidebar: Sample Images ====
-st.sidebar.header("🖼️ ตัวอย่างรูปภาพ")
+# ==== ตัวอย่างภาพ ====
 sample_images = {
     "สุนัข": "https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=3062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "จักรยาน": "https://plus.unsplash.com/premium_photo-1663091740058-b07d3f6832c2?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 
-selected_sample = None
-for label, url in sample_images.items():
-    st.sidebar.image(url, caption=label, use_container_width=True)
-    if st.sidebar.button(f"ใช้รูปภาพ: {label}"):
-        selected_sample = url
-        st.session_state['selected_sample_label'] = label
-
-# ==== Main UI ====
 st.title("🖼️ Image Captioning App")
-st.write("อัปโหลดรูปภาพ, ป้อน URL หรือเลือกรูปจากตัวอย่าง แล้วระบบจะอธิบายภาพให้คุณ")
+st.write("เลือกรูปจากตัวอย่างด้านล่าง, อัปโหลด, หรือป้อน URL แล้วระบบจะอธิบายรูปภาพให้คุณ")
 
-# ==== Load image ====
+# ==== ตัวอย่างภาพ (แสดงใน main area) ====
+st.write("📌 ตัวอย่างรูปภาพ")
+cols = st.columns(len(sample_images))
+selected_sample = None
+
+for idx, (label, url) in enumerate(sample_images.items()):
+    with cols[idx]:
+        st.image(url, caption=label, use_container_width=True)
+        if st.button(f"ใช้รูปภาพ: {label}", key=f"sample_{idx}"):
+            selected_sample = url
+            st.session_state['selected_sample_label'] = label
+
+# ==== โหลดรูป ====
 image = None
 
-# ✅ จากตัวอย่างใน sidebar
+# ✅ จากตัวอย่าง
 if selected_sample:
     try:
         response = requests.get(selected_sample)
@@ -44,15 +47,17 @@ if selected_sample:
     except:
         st.error("❌ ไม่สามารถโหลดรูปภาพตัวอย่างได้")
 
-# ✅ จากการอัปโหลดไฟล์
+# ✅ จากการอัปโหลด
 uploaded_file = st.file_uploader("📁 หรืออัปโหลดรูปภาพของคุณ", type=["png", "jpg", "jpeg"])
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
     st.success("✅ โหลดรูปภาพที่อัปโหลดสำเร็จ")
 
-# ✅ จาก URL ที่ป้อนเอง
-st.markdown("หรือ 🔗 ป้อน **URL รูปภาพ** ของคุณด้านล่าง:")
-image_url_input = st.text_input("URL ของรูปภาพ (ต้องลงท้ายด้วย .jpg, .png, .jpeg)")
+# ✅ จาก URL
+image_url_input = st.text_input(
+    "🔗 หรือป้อน URL ของรูปภาพ (ลงท้ายด้วย .jpg, .png, .jpeg)",
+    placeholder="ตัวอย่าง: https://pettownsendvet.com/wp-content/uploads/2023/01/iStock-1052880600.jpg"
+)
 
 if image_url_input and not uploaded_file and not selected_sample:
     try:
@@ -62,11 +67,12 @@ if image_url_input and not uploaded_file and not selected_sample:
             st.success("✅ โหลดรูปภาพจาก URL สำเร็จ")
         else:
             st.warning("⚠️ URL ควรลงท้ายด้วย .jpg, .jpeg หรือ .png")
-    except Exception as e:
+    except:
         st.error("❌ ไม่สามารถโหลดภาพจาก URL ได้ กรุณาตรวจสอบลิงก์อีกครั้ง")
 
-# ==== Generate Caption ====
+# ==== สร้างคำอธิบาย ====
 if image:
+    st.subheader("📸 ผลลัพธ์การทำ Image Captioning")
     st.image(image, caption="📸 รูปภาพที่เลือก", use_container_width=True)
 
     with st.spinner("🧠 กำลังวิเคราะห์และอธิบายรูปภาพ..."):
