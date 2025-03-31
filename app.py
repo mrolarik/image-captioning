@@ -30,7 +30,7 @@ selected_sample = None
 
 for idx, (label, url) in enumerate(sample_images.items()):
     with cols[idx]:
-        st.image(url, caption=label, use_column_width=True)
+        st.image(url, caption=label, use_container_width=True)
         if st.button(f"ใช้รูปภาพ: {label}", key=f"sample_{idx}"):
             selected_sample = url
             st.session_state['selected_sample_label'] = label
