@@ -64,19 +64,24 @@ if uploaded_file:
 
 # ==== URL input ====
 image_url_input = st.text_input(
-    "🔗 หรือป้อน URL ของรูปภาพ (ลงท้ายด้วย .jpg, .png, .jpeg)",
+    "🔗 ป้อน URL ของรูปภาพ (ลงท้ายด้วย .jpg, .png, .jpeg)",
     placeholder="ตัวอย่าง: https://pettownsendvet.com/wp-content/uploads/2023/01/iStock-1052880600.jpg"
 )
-if image_url_input and not uploaded_file and 'selected_sample_url' not in st.session_state:
-    try:
-        if image_url_input.lower().endswith((".jpg", ".jpeg", ".png")):
-            response = requests.get(image_url_input)
-            image = Image.open(BytesIO(response.content)).convert("RGB")
-            st.success("✅ โหลดรูปภาพจาก URL สำเร็จ")
-        else:
-            st.warning("⚠️ URL ควรลงท้ายด้วย .jpg, .jpeg หรือ .png")
-    except:
-        st.error("❌ ไม่สามารถโหลดภาพจาก URL ได้")
+
+if st.button("✅ โหลดรูปภาพจาก URL"):
+    if image_url_input:
+        try:
+            if image_url_input.lower().endswith((".jpg", ".jpeg", ".png")):
+                response = requests.get(image_url_input)
+                image = Image.open(BytesIO(response.content)).convert("RGB")
+                st.success("✅ โหลดรูปภาพจาก URL สำเร็จ")
+            else:
+                st.warning("⚠️ URL ควรลงท้ายด้วย .jpg, .jpeg หรือ .png")
+        except:
+            st.error("❌ ไม่สามารถโหลดภาพจาก URL ได้")
+    else:
+        st.warning("⚠️ กรุณาใส่ URL ก่อนกดปุ่ม")
+
 
 # ==== Caption generation ====
 if image:
