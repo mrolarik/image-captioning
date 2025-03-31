@@ -24,6 +24,9 @@ sample_images = {
     "ภูเขา": "https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 
+st.title("🖼️ Image Captioning App")
+st.write("เลือกรูปจากตัวอย่างด้านล่าง, อัปโหลด, หรือป้อน URL แล้วระบบจะอธิบายรูปภาพให้คุณ")
+
 # ==== Randomly select 2 images ====
 if 'random_keys' not in st.session_state:
     st.session_state.random_keys = random.sample(list(sample_images.keys()), 2)
